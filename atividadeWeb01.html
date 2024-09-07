@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button onclick="feedTable()">Cria Tabela</button>
+
+    <script>
+        function criaTabela() {
+            // Criando a tabela e os elementos associados
+            let table = document.createElement('table');
+            let headerRow = document.createElement('tr');
+            let headers = ['id', 'type', 'text'];
+            headers.forEach(headerText => {
+                let header = document.createElement('th');
+                header.textContent = headerText;
+                headerRow.appendChild(header);
+            });
+            table.appendChild(headerRow);
+            document.body.appendChild(table);
+            return table;
+        }
+
+        let table = criaTabela();
+
+        async function feedTable() {
+            let response = await fetch("https://cat-fact.herokuapp.com/facts");
+            let data = await response.json();
+
+            data.forEach(rowData => {
+                let row = document.createElement('tr');
+                let cellId = document.createElement('td');
+                cellId.textContent = rowData._id;
+                row.appendChild(cellId);
+
+                let cellType = document.createElement('td');
+                cellType.textContent = rowData.type;
+                row.appendChild(cellType);
+
+                let cellText = document.createElement('td');
+                cellText.textContent = rowData.text;
+                row.appendChild(cellText);
+
+                table.appendChild(row);
+            });
+            console.log(data);
+        }
+    </script>
+</body>
+
+</html>
